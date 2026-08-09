@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeGoTech — Engineering Intelligence for the Real World</title>
+<meta name="description" content="WeGoTech builds websites, intelligent applications, AI automation, smart systems and data solutions that help businesses operate, compete and grow.">
+<meta property="og:title" content="WeGoTech — Engineering Intelligence for the Real World">
+<meta property="og:description" content="AI integration, automation, software engineering, IoT and statistical research, delivered as one connected system.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05070a;
+    --bg2:#0a0e15;
+    --bg3:#0d1420;
+    --panel: rgba(255,255,255,0.035);
+    --line: rgba(255,255,255,0.09);
+    --line-bright: rgba(255,255,255,0.18);
+    --cyan:#5fd8e0;
+    --cyan-dim: rgba(95,216,224,0.5);
+    --violet:#8b6bff;
+    --violet-dim: rgba(139,107,255,0.5);
+    --white:#edf1f5;
+    --muted:#8891a0;
+    --muted-dim:#576172;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+    --radius: 3px;
+    --ease: cubic-bezier(.16,.8,.24,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--white);
+    font-family:var(--font-body);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--violet); color:#fff;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .container{max-width:1280px; margin:0 auto; padding:0 32px;}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--cyan);
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:16px; height:1px; background:var(--cyan);}
+  h1,h2,h3,h4{font-family:var(--font-display); font-weight:600; letter-spacing:-0.01em;}
+  section{position:relative; padding:140px 0;}
+  @media (max-width: 780px){ section{padding:88px 0;} .container{padding:0 20px;} }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ---------- boot loader ---------- */
+  #boot{
+    position:fixed; inset:0; background:var(--bg); z-index:9999;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-family:var(--font-mono); color:var(--muted); font-size:12px; letter-spacing:.08em;
+    transition:opacity .6s var(--ease), visibility .6s var(--ease);
+  }
+  #boot.hide{opacity:0; visibility:hidden; pointer-events:none;}
+  #boot .line{margin:3px 0; opacity:0; animation:fadeIn .4s forwards;}
+  #boot .line span{color:var(--cyan);}
+  #boot .l1{animation-delay:.05s;} #boot .l2{animation-delay:.35s;} #boot .l3{animation-delay:.65s;}
+  #boot .l4{animation-delay:.95s;} #boot .l5{animation-delay:1.3s; color:var(--white); font-size:14px; letter-spacing:.15em;}
+  @keyframes fadeIn{to{opacity:1;}}
+
+  /* ---------- nav ---------- */
+  header{
+    position:fixed; top:18px; left:0; right:0; z-index:500;
+    display:flex; justify-content:center;
+  }
+  nav{
+    display:flex; align-items:center; gap:36px;
+    padding:12px 22px;
+    background:rgba(8,11,16,0.55);
+    border:1px solid var(--line);
+    border-radius:40px;
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    transition:background .3s, border-color .3s;
+    max-width:calc(100vw - 32px);
+  }
+  nav.scrolled{background:rgba(8,11,16,0.85); border-color:var(--line-bright);}
+  .logo{font-family:var(--font-display); font-weight:700; font-size:15px; letter-spacing:.04em; display:flex; align-items:center; gap:8px;}
+  .logo .dot{width:6px; height:6px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan);}
+  .nav-links{display:flex; gap:26px; font-size:13px; color:var(--muted);}
+  .nav-links a{position:relative; transition:color .2s;}
+  .nav-links a:hover{color:var(--white);}
+  .nav-cta{
+    font-size:12.5px; font-family:var(--font-mono); padding:9px 16px;
+    border:1px solid var(--line-bright); border-radius:30px; white-space:nowrap;
+    transition:border-color .2s, background .2s;
+  }
+  .nav-cta:hover{border-color:var(--cyan); background:rgba(95,216,224,0.08);}
+  .nav-toggle{display:none;}
+  @media (max-width: 900px){
+    .nav-links{display:none;}
+    nav{gap:16px;}
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--font-mono); font-size:13px; letter-spacing:.03em;
+    padding:14px 24px; border-radius:2px; cursor:pointer; border:1px solid transparent;
+    transition:transform .25s var(--ease), box-shadow .25s, border-color .25s, background .25s;
+  }
+  .btn-primary{background:linear-gradient(135deg, var(--cyan), var(--violet)); color:#050608; font-weight:600;}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 30px -8px rgba(95,216,224,0.4);}
+  .btn-ghost{border-color:var(--line-bright); color:var(--white);}
+  .btn-ghost:hover{border-color:var(--cyan); color:var(--cyan); transform:translateY(-2px);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100vh; display:flex; align-items:center; position:relative;
+    padding-top:120px; overflow:hidden;
+  }
+  #hero-canvas{position:absolute; inset:0; width:100%; height:100%; opacity:0.85;}
+  .hero-grid{
+    position:absolute; inset:0;
+    background-image:linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 70% 70% at 50% 40%, black 20%, transparent 75%);
+  }
+  .hero-inner{position:relative; z-index:2; text-align:center; width:100%;}
+  .status-pill{
+    display:inline-flex; align-items:center; gap:8px; margin-bottom:28px;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.15em; color:var(--muted);
+    border:1px solid var(--line); padding:7px 14px; border-radius:20px; background:rgba(255,255,255,0.02);
+  }
+  .pulse{width:6px; height:6px; border-radius:50%; background:#4ade80; box-shadow:0 0 8px #4ade80; animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.35;}}
+  .hero h1{
+    font-size:clamp(2.4rem, 6.2vw, 5.4rem); line-height:1.03; letter-spacing:-0.02em;
+    max-width:1100px; margin:0 auto 26px;
+  }
+  .hero h1 .grad{background:linear-gradient(120deg, var(--cyan), var(--violet)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .hero p{
+    max-width:560px; margin:0 auto 40px; color:var(--muted); font-size:16px;
+  }
+  .hero-ctas{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+  @media (max-width:600px){ .hero{padding-top:100px;} }
+
+  /* ---------- reveal utility ---------- */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .8s var(--ease), transform .8s var(--ease);}
+  .reveal.in{opacity:1; transform:translateY(0);}
+  .reveal-stagger > *{opacity:0; transform:translateY(24px); transition:opacity .7s var(--ease), transform .7s var(--ease);}
+  .reveal-stagger.in > *{opacity:1; transform:translateY(0);}
+  .reveal-stagger.in > *:nth-child(1){transition-delay:.03s;}
+  .reveal-stagger.in > *:nth-child(2){transition-delay:.09s;}
+  .reveal-stagger.in > *:nth-child(3){transition-delay:.15s;}
+  .reveal-stagger.in > *:nth-child(4){transition-delay:.21s;}
+  .reveal-stagger.in > *:nth-child(5){transition-delay:.27s;}
+  .reveal-stagger.in > *:nth-child(6){transition-delay:.33s;}
+
+  /* ---------- section heads ---------- */
+  .section-head{max-width:640px; margin-bottom:64px;}
+  .section-head h2{font-size:clamp(1.7rem, 3.4vw, 2.6rem); margin-top:14px; letter-spacing:-0.015em;}
+  .section-head p{color:var(--muted); margin-top:16px; font-size:15.5px; max-width:520px;}
+  .section-head.center{margin-left:auto; margin-right:auto; text-align:center;}
+  .section-head.center .eyebrow{justify-content:center;}
+  .section-head.center .eyebrow::before{display:none;}
+
+  /* ---------- philosophy ---------- */
+  .philosophy{background:var(--bg2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .philosophy .container{max-width:920px; text-align:center;}
+  .philosophy .lead{
+    font-family:var(--font-display); font-size:clamp(1.5rem,3.4vw,2.3rem); line-height:1.35; letter-spacing:-0.01em;
+  }
+  .philosophy .lead span{opacity:0.18; transition:opacity .5s;}
+  .philosophy .lead span.on{opacity:1;}
+  .philosophy .sub{color:var(--muted); margin-top:34px; font-size:16px; max-width:640px; margin-left:auto; margin-right:auto;}
+
+  /* ---------- services ---------- */
+  .services-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:980px){ .services-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:640px){ .services-grid{grid-template-columns:1fr;} }
+  .service-card{
+    background:var(--bg); padding:38px 32px; position:relative; overflow:hidden; min-height:260px;
+    display:flex; flex-direction:column; transition:background .3s;
+  }
+  .service-card:hover{background:var(--bg2);}
+  .service-card .num{font-family:var(--font-mono); font-size:11px; color:var(--muted-dim); letter-spacing:.1em;}
+  .service-card h3{font-size:1.15rem; margin-top:22px; margin-bottom:12px;}
+  .service-card p{color:var(--muted); font-size:14px; flex:1;}
+  .service-card .viz{height:56px; margin-top:20px; position:relative;}
+  .service-card .viz svg{width:100%; height:100%;}
+  .service-card .viz-line{stroke:var(--cyan); stroke-width:1; fill:none; opacity:.7;}
+  .service-card .viz-dot{fill:var(--violet);}
+
+  /* ---------- ecosystem ---------- */
+  .ecosystem{background:var(--bg3);}
+  .radial-wrap{position:relative; width:100%; max-width:640px; aspect-ratio:1/1; margin:0 auto;}
+  .radial-center{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:132px; height:132px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, rgba(139,107,255,0.35), rgba(5,7,10,0.9));
+    border:1px solid var(--line-bright);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; color:var(--white);
+    box-shadow:0 0 60px -10px rgba(139,107,255,0.4);
+    z-index:3;
+  }
+  .radial-ring{position:absolute; inset:0; border:1px dashed var(--line); border-radius:50%;}
+  .radial-node{
+    position:absolute; width:74px; height:74px; margin:-37px 0 0 -37px;
+    border-radius:50%; background:rgba(255,255,255,0.03); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.03em; color:var(--muted);
+    cursor:pointer; transition:all .3s var(--ease); z-index:2; padding:4px;
+  }
+  .radial-node:hover, .radial-node.active{
+    background:rgba(95,216,224,0.1); border-color:var(--cyan); color:var(--white);
+    box-shadow:0 0 24px -4px rgba(95,216,224,0.5); transform:scale(1.08);
+  }
+  #ecosystem-svg{position:absolute; inset:0; width:100%; height:100%; z-index:1;}
+  #ecosystem-svg line{stroke:var(--line-bright); stroke-width:1; opacity:.4; transition:opacity .3s, stroke .3s;}
+  #ecosystem-svg line.active{stroke:var(--cyan); opacity:1;}
+  .eco-readout{
+    font-family:var(--font-mono); font-size:12.5px; color:var(--muted); text-align:center; margin-top:36px; min-height:20px;
+  }
+  .eco-readout span{color:var(--cyan);}
+
+  /* ---------- process ---------- */
+  .process-list{border-top:1px solid var(--line);}
+  .process-item{
+    display:grid; grid-template-columns:90px 1fr 1.4fr; gap:32px; padding:34px 0;
+    border-bottom:1px solid var(--line); align-items:start;
+  }
+  @media (max-width:780px){ .process-item{grid-template-columns:50px 1fr; } .process-item .p-desc{grid-column:1/-1;} }
+  .process-item .p-num{font-family:var(--font-mono); color:var(--muted-dim); font-size:13px; padding-top:4px;}
+  .process-item h3{font-size:1.1rem;}
+  .process-item p{color:var(--muted); font-size:14.5px;}
+
+  /* ---------- control center ---------- */
+  .control{background:var(--bg2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .control-note{font-family:var(--font-mono); font-size:11px; color:var(--muted-dim); letter-spacing:.05em; margin-top:8px;}
+  .stat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:48px;}
+  @media (max-width:780px){ .stat-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:480px){ .stat-grid{grid-template-columns:1fr;} }
+  .stat{background:var(--bg2); padding:30px 26px;}
+  .stat .stat-label{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.1em; color:var(--muted); text-transform:uppercase;}
+  .stat .stat-value{font-family:var(--font-display); font-size:2.1rem; margin-top:10px; color:var(--white);}
+  .stat .stat-value .unit{font-size:1rem; color:var(--muted); margin-left:4px;}
+  .stat-bar{height:3px; background:rgba(255,255,255,0.06); margin-top:14px; border-radius:2px; overflow:hidden;}
+  .stat-bar i{display:block; height:100%; background:linear-gradient(90deg,var(--cyan),var(--violet)); width:0%; transition:width 1.4s var(--ease);}
+
+  /* ---------- agents ---------- */
+  .agents-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:20px;}
+  @media (max-width:980px){ .agents-grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:600px){ .agents-grid{grid-template-columns:repeat(2,1fr);} }
+  .agent-btn{
+    border:1px solid var(--line); background:var(--panel); padding:22px 16px; text-align:left;
+    cursor:pointer; transition:all .25s var(--ease); color:var(--white); font-family:inherit;
+  }
+  .agent-btn:hover, .agent-btn.active{border-color:var(--cyan); background:rgba(95,216,224,0.06);}
+  .agent-btn .a-name{font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; color:var(--cyan);}
+  .agent-btn .a-role{font-size:13.5px; margin-top:8px; color:var(--muted); line-height:1.4;}
+  .terminal{
+    margin-top:28px; border:1px solid var(--line-bright); background:#070a0f; border-radius:4px; overflow:hidden;
+  }
+  .terminal-bar{
+    display:flex; align-items:center; gap:8px; padding:10px 14px; border-bottom:1px solid var(--line); background:rgba(255,255,255,0.02);
+    font-family:var(--font-mono); font-size:11px; color:var(--muted);
+  }
+  .terminal-bar .dot{width:8px; height:8px; border-radius:50%; background:var(--muted-dim);}
+  .terminal-body{padding:20px 22px; font-family:var(--font-mono); font-size:13px; min-height:120px;}
+  .terminal-body .t-user{color:var(--muted); margin-bottom:10px;}
+  .terminal-body .t-user::before{content:'> '; color:var(--violet);}
+  .terminal-body .t-ai{color:var(--cyan); line-height:1.7;}
+  .terminal-body .t-ai::before{content:'◆ '; color:var(--cyan);}
+  .cursor-blink{display:inline-block; width:6px; height:13px; background:var(--cyan); animation:blink 1s infinite; vertical-align:middle; margin-left:2px;}
+  @keyframes blink{0%,50%{opacity:1;} 51%,100%{opacity:0;}}
+
+  /* ---------- smart space ---------- */
+  .space-wrap{position:relative; border:1px solid var(--line); background:linear-gradient(160deg, var(--bg3), var(--bg2)); aspect-ratio:16/10; overflow:hidden;}
+  .space-wrap svg{width:100%; height:100%;}
+  .hotspot{
+    position:absolute; width:22px; height:22px; margin:-11px 0 0 -11px; border-radius:50%;
+    border:1px solid var(--cyan); background:rgba(95,216,224,0.15); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .hotspot::after{content:''; width:6px; height:6px; border-radius:50%; background:var(--cyan); box-shadow:0 0 10px var(--cyan);}
+  .hotspot::before{content:''; position:absolute; inset:-6px; border:1px solid var(--cyan-dim); border-radius:50%; animation:ring 2.4s infinite;}
+  @keyframes ring{0%{transform:scale(.7); opacity:.8;} 100%{transform:scale(1.9); opacity:0;}}
+  .space-info{margin-top:26px; border:1px solid var(--line); background:var(--panel); padding:22px 24px; min-height:88px;}
+  .space-info .si-title{font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; color:var(--cyan);}
+  .space-info .si-body{color:var(--muted); font-size:14.5px; margin-top:8px;}
+
+  /* ---------- data section ---------- */
+  .data-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:60px; align-items:center;}
+  @media (max-width:900px){ .data-grid{grid-template-columns:1fr; gap:40px;} }
+  .data-tags{display:flex; flex-wrap:wrap; gap:10px; margin-top:28px;}
+  .data-tags span{
+    font-family:var(--font-mono); font-size:11.5px; padding:7px 13px; border:1px solid var(--line); color:var(--muted); border-radius:20px;
+  }
+  .chart-box{border:1px solid var(--line); background:var(--panel); padding:26px; }
+  .chart-box svg{width:100%; height:auto; overflow:visible;}
+  .chart-line{fill:none; stroke:var(--cyan); stroke-width:2; stroke-dasharray:600; stroke-dashoffset:600; transition:stroke-dashoffset 1.6s var(--ease);}
+  .chart-line.in{stroke-dashoffset:0;}
+  .chart-area{fill:url(#areaGrad); opacity:0; transition:opacity 1.2s var(--ease) .3s;}
+  .chart-area.in{opacity:1;}
+  .chart-dot{fill:var(--violet); opacity:0; transition:opacity .4s;}
+  .chart-dot.in{opacity:1;}
+
+  /* ---------- stack marquee ---------- */
+  .marquee{overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:26px 0; background:var(--bg2);}
+  .marquee-track{display:flex; gap:56px; width:max-content; animation:scroll 34s linear infinite;}
+  @media (prefers-reduced-motion: reduce){ .marquee-track{animation:none; flex-wrap:wrap;} }
+  .marquee-track span{font-family:var(--font-mono); font-size:14px; color:var(--muted); white-space:nowrap;}
+  @keyframes scroll{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+
+  /* ---------- projects ---------- */
+  .projects-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
+  @media (max-width:780px){ .projects-grid{grid-template-columns:1fr;} }
+  .project-card{
+    border:1px solid var(--line); position:relative; overflow:hidden; padding:32px 30px; min-height:280px;
+    display:flex; flex-direction:column; justify-content:flex-end; transition:border-color .3s, transform .3s var(--ease);
+    background:linear-gradient(160deg, var(--bg2), var(--bg));
+  }
+  .project-card:hover{border-color:var(--cyan-dim); transform:translateY(-4px);}
+  .project-card .p-tag{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.1em; color:var(--cyan); text-transform:uppercase;}
+  .project-card h3{font-size:1.3rem; margin:12px 0 10px;}
+  .project-card .p-meta{color:var(--muted); font-size:13.5px; line-height:1.6;}
+  .project-card .p-meta b{color:var(--white); font-weight:500;}
+  .project-card .p-glow{position:absolute; width:280px; height:280px; border-radius:50%; filter:blur(70px); opacity:.18; top:-80px; right:-80px; background:var(--violet); transition:opacity .3s;}
+  .project-card:hover .p-glow{opacity:.32;}
+
+  /* ---------- why us ---------- */
+  .principles{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:900px){ .principles{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .principles{grid-template-columns:1fr;} }
+  .principle{background:var(--bg); padding:32px 26px;}
+  .principle .num{font-family:var(--font-mono); font-size:11px; color:var(--muted-dim);}
+  .principle h3{font-size:1.02rem; margin-top:16px; margin-bottom:10px;}
+  .principle p{color:var(--muted); font-size:13.5px;}
+
+  /* ---------- about / timeline ---------- */
+  .about{background:var(--bg2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .about-lead{font-size:clamp(1.4rem,2.6vw,1.9rem); font-family:var(--font-display); max-width:760px; letter-spacing:-0.01em;}
+  .about-list{display:flex; flex-wrap:wrap; gap:12px; margin-top:30px;}
+  .about-list span{font-family:var(--font-mono); font-size:12px; color:var(--muted); border:1px solid var(--line); padding:8px 14px; border-radius:20px;}
+  .timeline{display:flex; align-items:center; margin-top:56px; overflow-x:auto; gap:0; padding-bottom:10px;}
+  .timeline .t-step{flex:1; min-width:120px; text-align:center; position:relative; padding-top:20px;}
+  .timeline .t-step::before{content:''; position:absolute; top:0; left:0; right:0; height:1px; background:var(--line-bright);}
+  .timeline .t-step::after{content:''; position:absolute; top:-3px; left:50%; margin-left:-3px; width:7px; height:7px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan);}
+  .timeline .t-step span{font-family:var(--font-mono); font-size:11.5px; color:var(--muted); letter-spacing:.05em;}
+  .timeline .t-step:last-child span{color:var(--cyan);}
+
+  /* ---------- final CTA ---------- */
+  .final-cta{text-align:center; position:relative; overflow:hidden;}
+  .final-grid{position:absolute; inset:0; background-image:linear-gradient(rgba(95,216,224,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(95,216,224,0.05) 1px, transparent 1px); background-size:48px 48px; mask-image:linear-gradient(to bottom, transparent, black 60%);}
+  .final-cta .container{position:relative; z-index:2;}
+  .final-cta h2{font-size:clamp(2rem,5vw,3.6rem); max-width:800px; margin:0 auto 20px; letter-spacing:-0.02em;}
+  .final-cta p{color:var(--muted); max-width:520px; margin:0 auto 36px; font-size:16px;}
+  .final-cta .hero-ctas{margin-top:6px;}
+
+  /* ---------- contact ---------- */
+  .contact{background:var(--bg2); border-top:1px solid var(--line);}
+  .contact-grid{display:grid; grid-template-columns:0.8fr 1.2fr; gap:60px;}
+  @media (max-width:900px){ .contact-grid{grid-template-columns:1fr; gap:36px;} }
+  .contact-side .cs-label{font-family:var(--font-mono); font-size:11px; color:var(--muted); letter-spacing:.08em;}
+  .contact-side .cs-value{margin-top:6px; margin-bottom:26px; font-size:15px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--muted); margin-bottom:8px; text-transform:uppercase;}
+  .field input, .field select, .field textarea{
+    width:100%; background:rgba(255,255,255,0.02); border:1px solid var(--line); color:var(--white);
+    padding:13px 14px; font-family:var(--font-body); font-size:14px; border-radius:2px; transition:border-color .2s, background .2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--cyan); background:rgba(95,216,224,0.03);}
+  .field textarea{resize:vertical; min-height:110px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:560px){ .field-row{grid-template-columns:1fr;} }
+  #contact-form.hidden, #confirm.hidden{display:none;}
+  #confirm{border:1px solid var(--cyan-dim); background:rgba(95,216,224,0.05); padding:40px 32px; text-align:center;}
+  #confirm .c-title{font-family:var(--font-mono); font-size:13px; color:var(--cyan); letter-spacing:.1em;}
+  #confirm h3{font-size:1.5rem; margin-top:14px;}
+  #confirm p{color:var(--muted); margin-top:10px; font-size:14px;}
+
+  /* ---------- footer ---------- */
+  footer{padding:48px 0; border-top:1px solid var(--line);}
+  .footer-inner{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
+  footer .f-links{display:flex; gap:24px; font-size:13px; color:var(--muted);}
+  footer .f-copy{font-family:var(--font-mono); font-size:11.5px; color:var(--muted-dim);}
+
+  .visually-hidden{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);}
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
+    outline:2px solid var(--cyan); outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+
+<div id="boot" aria-hidden="true">
+  <div class="line l1">INITIALIZING SYSTEM<span>...</span></div>
+  <div class="line l2">AI MODULE <span>........ ONLINE</span></div>
+  <div class="line l3">DATA ENGINE <span>...... ONLINE</span></div>
+  <div class="line l4">AUTOMATION <span>....... ONLINE</span></div>
+  <div class="line l5">WELCOME TO WEGOTECH</div>
+</div>
+
+<header>
+  <nav id="nav">
+    <div class="logo"><span class="dot"></span>WEGOTECH</div>
+    <div class="nav-links">
+      <a href="#solutions">Solutions</a>
+      <a href="#ecosystem">Technologies</a>
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="#data">Research</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Start a Project →</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="container hero-inner">
+    <div class="status-pill"><span class="pulse"></span> SYSTEM STATUS: ONLINE</div>
+    <h1>Engineering <span class="grad">intelligence</span> for the real world.</h1>
+    <p>We build websites, intelligent applications, AI-powered automation, smart systems, and data solutions that help businesses operate, compete, and grow.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn btn-primary">Build With Us →</a>
+      <a href="#solutions" class="btn btn-ghost">Explore Our Technology</a>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy">
+  <div class="container">
+    <p class="lead" id="philosophy-text">Technology should do more than exist. It should think, connect, automate, and create value.</p>
+    <p class="sub reveal">We combine software engineering, artificial intelligence, automation, smart technologies, and statistical intelligence to create systems designed around real business problems.</p>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="solutions">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">What we engineer</div>
+      <h2>Six disciplines, one connected system.</h2>
+      <p>Each engagement draws on whichever combination of these actually solves the problem — not a fixed package.</p>
+    </div>
+  </div>
+  <div class="services-grid reveal-stagger" id="services-grid">
+    <div class="service-card">
+      <div class="num">01</div>
+      <h3>AI &amp; Intelligent Automation</h3>
+      <p>AI agents, business automation, intelligent workflows, document processing, customer support automation, decision systems, and AI integrations.</p>
+      <div class="viz"><svg viewBox="0 0 220 56"><g class="net-viz"></g></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="num">02</div>
+      <h3>Web &amp; Digital Platforms</h3>
+      <p>High-performance websites, web applications, dashboards, e-commerce platforms, portals, booking systems, and custom business platforms.</p>
+      <div class="viz"><svg viewBox="0 0 220 56"><rect x="4" y="6" width="212" height="44" rx="3" fill="none" stroke="var(--line-bright)"/><rect x="4" y="6" width="212" height="12" fill="rgba(95,216,224,0.08)"/><circle class="viz-dot" cx="12" cy="12" r="2"/><circle class="viz-dot" cx="20" cy="12" r="2" fill="var(--cyan)"/><line class="viz-line" x1="14" y1="34" x2="90" y2="34"/><line class="viz-line" x1="14" y1="42" x2="60" y2="42"/></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="num">03</div>
+      <h3>Mobile &amp; Custom Applications</h3>
+      <p>Modern mobile applications and custom software designed around real-world business requirements.</p>
+      <div class="viz"><svg viewBox="0 0 220 56"><rect x="88" y="2" width="44" height="52" rx="6" fill="none" stroke="var(--line-bright)"/><line class="viz-line" x1="96" y1="12" x2="124" y2="12"/><line class="viz-line" x1="96" y1="20" x2="116" y2="20"/><circle class="viz-dot" cx="110" cy="42" r="3"/></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="num">04</div>
+      <h3>Smart Systems &amp; IoT</h3>
+      <p>Smart homes, smart offices, intelligent security, sensors, connected devices, automation systems, monitoring, and IoT integrations.</p>
+      <div class="viz"><svg viewBox="0 0 220 56"><polygon points="110,4 200,26 110,50 20,26" fill="none" stroke="var(--line-bright)"/><circle class="viz-dot" cx="110" cy="26" r="3"/><circle class="viz-dot" cx="60" cy="26" r="2" fill="var(--cyan)"/><circle class="viz-dot" cx="160" cy="26" r="2" fill="var(--cyan)"/><line class="viz-line" x1="110" y1="26" x2="60" y2="26"/><line class="viz-line" x1="110" y1="26" x2="160" y2="26"/></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="num">05</div>
+      <h3>Data Science &amp; Statistical Research</h3>
+      <p>Statistical analysis, research design, predictive modeling, data visualization, forecasting, experimentation, and decision intelligence.</p>
+      <div class="viz"><svg viewBox="0 0 220 56"><polyline class="viz-line" points="4,44 40,30 76,38 112,14 148,22 184,6 216,18"/><circle class="viz-dot" cx="112" cy="14" r="2.5"/><circle class="viz-dot" cx="184" cy="6" r="2.5"/></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="num">06</div>
+      <h3>Digital Transformation</h3>
+      <p>We help traditional businesses transition into intelligent, connected, automated digital operations.</p>
+      <div class="viz"><svg viewBox="0 0 220 56"><rect x="8" y="20" width="16" height="16" fill="none" stroke="var(--line-bright)"/><line class="viz-line" x1="24" y1="28" x2="196" y2="28" stroke-dasharray="3 3"/><circle class="viz-dot" cx="200" cy="28" r="4"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section id="ecosystem" class="ecosystem">
+  <div class="container">
+    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+      <div class="eyebrow">One ecosystem</div>
+      <h2>Many possibilities.</h2>
+      <p>Every technology we build connects back to the same core. Hover a node to trace what it powers.</p>
+    </div>
+    <div class="radial-wrap reveal" id="radial-wrap">
+      <svg id="ecosystem-svg"></svg>
+      <div class="radial-ring"></div>
+      <div class="radial-center">INTELLIGENT<br>BUSINESS</div>
+      <!-- nodes injected by JS -->
+    </div>
+    <p class="eco-readout" id="eco-readout">Hover a node to see what it connects to.</p>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">From idea to intelligent system</div>
+      <h2>A six-stage build, in order.</h2>
+    </div>
+    <div class="process-list reveal-stagger" id="process-list">
+      <div class="process-item"><div class="p-num">01</div><h3>Discover</h3><p class="p-desc">Understand the business, the problem, the users, and the opportunity.</p></div>
+      <div class="process-item"><div class="p-num">02</div><h3>Design</h3><p class="p-desc">Design the architecture, the experience, and the technology strategy.</p></div>
+      <div class="process-item"><div class="p-num">03</div><h3>Build</h3><p class="p-desc">Develop the software, AI, automation, or smart system.</p></div>
+      <div class="process-item"><div class="p-num">04</div><h3>Integrate</h3><p class="p-desc">Connect APIs, databases, devices, business systems, and existing infrastructure.</p></div>
+      <div class="process-item"><div class="p-num">05</div><h3>Intelligently automate</h3><p class="p-desc">Introduce AI, workflows, agents, analytics, and automation where they create measurable value.</p></div>
+      <div class="process-item"><div class="p-num">06</div><h3>Deploy &amp; evolve</h3><p class="p-desc">Launch, monitor, improve, and continuously optimize the system.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTROL CENTER -->
+<section class="control">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Your business, connected</div>
+      <h2>A conceptual look at a connected operation.</h2>
+      <p class="control-note">Illustrative demonstration — not live customer data.</p>
+    </div>
+    <div class="stat-grid" id="stat-grid">
+      <div class="stat"><div class="stat-label">AI Agents</div><div class="stat-value" data-target="6" data-suffix="">0</div><div class="stat-bar"><i data-width="82%"></i></div></div>
+      <div class="stat"><div class="stat-label">Automations</div><div class="stat-value" data-target="24" data-suffix=" active">0</div><div class="stat-bar"><i data-width="70%"></i></div></div>
+      <div class="stat"><div class="stat-label">Devices</div><div class="stat-value" data-target="128" data-suffix=" connected">0</div><div class="stat-bar"><i data-width="90%"></i></div></div>
+      <div class="stat"><div class="stat-label">Data processed</div><div class="stat-value" data-target="2.8" data-suffix="M records" data-decimal="1">0</div><div class="stat-bar"><i data-width="65%"></i></div></div>
+      <div class="stat"><div class="stat-label">System health</div><div class="stat-value" data-target="99.8" data-suffix="%" data-decimal="1">0</div><div class="stat-bar"><i data-width="99%"></i></div></div>
+      <div class="stat"><div class="stat-label">API connections</div><div class="stat-value" data-target="17" data-suffix=" active">0</div><div class="stat-bar"><i data-width="55%"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section id="agents">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Meet your digital workforce</div>
+      <h2>Five agents. One click to see them work.</h2>
+      <p>Select an agent to run a simulated demonstration of what it can do.</p>
+    </div>
+    <div class="agents-grid reveal-stagger" id="agents-grid">
+      <button class="agent-btn active" data-agent="0"><div class="a-name">SALES AGENT</div><div class="a-role">Handles leads, qualification, follow-ups, and customer questions.</div></button>
+      <button class="agent-btn" data-agent="1"><div class="a-name">SUPPORT AGENT</div><div class="a-role">Answers customer questions and assists users 24/7.</div></button>
+      <button class="agent-btn" data-agent="2"><div class="a-name">OPERATIONS AGENT</div><div class="a-role">Automates repetitive business workflows.</div></button>
+      <button class="agent-btn" data-agent="3"><div class="a-name">RESEARCH AGENT</div><div class="a-role">Collects, analyzes, and summarizes information.</div></button>
+      <button class="agent-btn" data-agent="4"><div class="a-name">DATA AGENT</div><div class="a-role">Transforms business data into actionable insights.</div></button>
+    </div>
+    <div class="terminal reveal">
+      <div class="terminal-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;&nbsp;agent-console — simulated demo</div>
+      <div class="terminal-body" id="terminal-body"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SMART SPACE -->
+<section id="smart-space">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Turn spaces into systems</div>
+      <h2>Smart homes and smart offices.</h2>
+      <p>Click a hotspot to see what it does.</p>
+    </div>
+    <div class="space-wrap reveal" id="space-wrap">
+      <svg viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice">
+        <polygon points="320,30 590,160 590,370 50,370 50,160" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>
+        <line x1="320" y1="160" x2="320" y2="370" stroke="rgba(255,255,255,0.08)"/>
+        <line x1="50" y1="240" x2="590" y2="240" stroke="rgba(255,255,255,0.08)"/>
+      </svg>
+      <div class="hotspot" style="top:22%; left:34%;" data-spot="0"></div>
+      <div class="hotspot" style="top:35%; left:70%;" data-spot="1"></div>
+      <div class="hotspot" style="top:58%; left:20%;" data-spot="2"></div>
+      <div class="hotspot" style="top:70%; left:55%;" data-spot="3"></div>
+      <div class="hotspot" style="top:48%; left:85%;" data-spot="4"></div>
+    </div>
+    <div class="space-info reveal" id="space-info">
+      <div class="si-title">SMART LIGHTING</div>
+      <div class="si-body">Automatically adjusts lighting based on occupancy, time, environmental conditions, and user preferences.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA -->
+<section id="data">
+  <div class="container">
+    <div class="data-grid">
+      <div class="reveal">
+        <div class="eyebrow">Data has a story</div>
+        <h2 style="font-size:clamp(1.7rem,3.4vw,2.4rem); margin-top:14px;">We find it.</h2>
+        <p style="color:var(--muted); margin-top:16px; font-size:15.5px;">Statistical research, predictive modeling, and decision intelligence built on rigorous method, not guesswork.</p>
+        <div class="data-tags">
+          <span>Statistical Research</span><span>Data Analysis</span><span>Predictive Modeling</span>
+          <span>Forecasting</span><span>Experimental Design</span><span>Business Intelligence</span><span>Data Visualization</span>
+        </div>
+      </div>
+      <div class="chart-box reveal" id="chart-box">
+        <svg viewBox="0 0 400 200">
+          <defs>
+            <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--cyan)" stop-opacity="0.28"/>
+              <stop offset="100%" stop-color="var(--cyan)" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g stroke="rgba(255,255,255,0.06)">
+            <line x1="0" y1="40" x2="400" y2="40"/><line x1="0" y1="90" x2="400" y2="90"/>
+            <line x1="0" y1="140" x2="400" y2="140"/><line x1="0" y1="190" x2="400" y2="190"/>
+          </g>
+          <path class="chart-area" id="area-path" d="M0,170 L40,150 L80,155 L120,110 L160,120 L200,80 L240,95 L280,55 L320,68 L360,30 L400,42 L400,200 L0,200 Z"/>
+          <polyline class="chart-line" id="line-path" points="0,170 40,150 80,155 120,110 160,120 200,80 240,95 280,55 320,68 360,30 400,42"/>
+          <g id="chart-dots"></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<div class="marquee">
+  <div class="marquee-track" id="marquee-track"></div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Systems we build</div>
+      <h2>Selected work.</h2>
+    </div>
+    <div class="projects-grid reveal-stagger">
+      <div class="project-card"><div class="p-glow"></div><div class="p-tag">Automation</div><h3>AI Business Automation</h3><div class="p-meta"><b>Problem:</b> manual workflows slowing operations. <b>Solution:</b> AI-powered automation platform. <b>Result:</b> hours of manual work removed weekly.</div></div>
+      <div class="project-card"><div class="p-glow"></div><div class="p-tag">Smart systems</div><h3>Smart Security</h3><div class="p-meta"><b>Problem:</b> fragmented monitoring across sites. <b>Solution:</b> connected security and monitoring system. <b>Result:</b> one unified view, real-time alerts.</div></div>
+      <div class="project-card"><div class="p-glow"></div><div class="p-tag">Commerce</div><h3>Intelligent Commerce</h3><div class="p-meta"><b>Problem:</b> low conversion, generic storefront. <b>Solution:</b> AI-enhanced e-commerce platform. <b>Result:</b> personalized experience at scale.</div></div>
+      <div class="project-card"><div class="p-glow"></div><div class="p-tag">Data</div><h3>Data Intelligence</h3><div class="p-meta"><b>Problem:</b> decisions made on gut feel. <b>Solution:</b> statistical analytics and decision-support platform. <b>Result:</b> forecasting grounded in evidence.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Why technology should work differently</div>
+      <h2>Four principles.</h2>
+    </div>
+  </div>
+  <div class="principles reveal-stagger">
+    <div class="principle"><div class="num">01</div><h3>Engineered for the problem</h3><p>We don't force businesses into generic software.</p></div>
+    <div class="principle"><div class="num">02</div><h3>Intelligence by design</h3><p>AI and automation are integrated where they create measurable value.</p></div>
+    <div class="principle"><div class="num">03</div><h3>Connected systems</h3><p>Software, data, devices, APIs, and people should work together.</p></div>
+    <div class="principle"><div class="num">04</div><h3>Built to evolve</h3><p>Systems should grow with the business rather than become obsolete.</p></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">About Axiom</div>
+      <h2 class="about-lead" style="margin-top:14px;">We build the infrastructure of tomorrow's businesses.</h2>
+      <div class="about-list">
+        <span>Software Engineering</span><span>Artificial Intelligence</span><span>Data Science</span>
+        <span>Automation</span><span>IoT</span><span>Statistical Research</span><span>Digital Product Design</span>
+      </div>
+    </div>
+    <div class="timeline reveal">
+      <div class="t-step"><span>WEB</span></div>
+      <div class="t-step"><span>CLOUD</span></div>
+      <div class="t-step"><span>MOBILE</span></div>
+      <div class="t-step"><span>AI</span></div>
+      <div class="t-step"><span>AUTOMATION</span></div>
+      <div class="t-step"><span>INTELLIGENT SYSTEMS</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="final-grid" aria-hidden="true"></div>
+  <div class="container reveal">
+    <h2>What should we build next?</h2>
+    <p>Have a business problem, an idea, or a system that needs to become smarter? Let's engineer it.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn btn-primary">Start a Project</a>
+      <a href="#contact" class="btn btn-ghost">Talk to an Engineer</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-side reveal">
+        <div class="eyebrow">Initialize project</div>
+        <h2 style="font-size:1.9rem; margin:14px 0 30px;">Tell us what you're building.</h2>
+        <div class="cs-label">Response time</div>
+        <div class="cs-value">Within one business day</div>
+        <div class="cs-label">Email</div>
+        <div class="cs-value">hello@wegotech.com</div>
+        <div class="cs-label">Status</div>
+        <div class="cs-value"><span class="pulse" style="display:inline-block; margin-right:6px;"></span>Accepting new projects</div>
+      </div>
+      <div class="reveal">
+        <form id="contact-form">
+          <div class="field-row">
+            <div class="field"><label for="f-name">Name</label><input id="f-name" type="text" required></div>
+            <div class="field"><label for="f-company">Company</label><input id="f-company" type="text"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" required></div>
+            <div class="field"><label for="f-budget">Budget range</label>
+              <select id="f-budget">
+                <option>Under $5,000</option><option>$5,000 – $20,000</option>
+                <option>$20,000 – $50,000</option><option>$50,000+</option><option>Not sure yet</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-type">Project type</label>
+            <select id="f-type">
+              <option>Website</option><option>AI Integration</option><option>AI Automation</option>
+              <option>Mobile App</option><option>Smart Home / IoT</option><option>Data Science</option>
+              <option>Statistical Research</option><option>Custom Software</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label for="f-desc">Project description</label><textarea id="f-desc" required></textarea></div>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:6px;">Initialize Project →</button>
+        </form>
+        <div id="confirm" class="hidden">
+          <div class="c-title">TRANSMISSION RECEIVED</div>
+          <h3>Project request registered.</h3>
+          <p>SYSTEM STATUS: request logged — we'll respond within one business day.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div class="logo"><span class="dot"></span>WEGOTECH</div>
+    <div class="f-links"><a href="#solutions">Solutions</a><a href="#projects">Projects</a><a href="#about">About</a><a href="#contact">Contact</a></div>
+    <div class="f-copy">© 2026 WEGOTECH — SYSTEM STATUS: ONLINE</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // boot sequence
+  const boot = document.getElementById('boot');
+  const bootDelay = reducedMotion ? 200 : 1700;
+  setTimeout(()=> boot.classList.add('hide'), bootDelay);
+
+  // nav scroll state
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', ()=>{
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, {passive:true});
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el=> io.observe(el));
+
+  // philosophy line-reveal
+  const philText = document.getElementById('philosophy-text');
+  const words = philText.textContent.trim().split(' ');
+  philText.innerHTML = words.map(w=>`<span>${w}</span>`).join(' ');
+  const philSpans = philText.querySelectorAll('span');
+  const philIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        philSpans.forEach((s,i)=> setTimeout(()=> s.classList.add('on'), reducedMotion?0:i*35));
+        philIO.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.4});
+  philIO.observe(philText);
+
+  // service card micro svg network animation (card 01)
+  const netG = document.querySelector('.net-viz');
+  if(netG){
+    const pts = [[10,28],[50,10],[50,46],[100,28],[150,14],[150,42],[205,28]];
+    const edges = [[0,1],[0,2],[1,3],[2,3],[3,4],[3,5],[4,6],[5,6]];
+    edges.forEach(([a,b])=>{
+      const l = document.createElementNS('http://www.w3.org/2000/svg','line');
+      l.setAttribute('x1',pts[a][0]); l.setAttribute('y1',pts[a][1]);
+      l.setAttribute('x2',pts[b][0]); l.setAttribute('y2',pts[b][1]);
+      l.setAttribute('class','viz-line');
+      netG.appendChild(l);
+    });
+    pts.forEach(p=>{
+      const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('cx',p[0]); c.setAttribute('cy',p[1]); c.setAttribute('r',3);
+      c.setAttribute('class','viz-dot');
+      netG.appendChild(c);
+    });
+  }
+
+  // ===== ECOSYSTEM RADIAL DIAGRAM =====
+  const ecoLabels = ['Artificial Intelligence','Automation','Software','Data','IoT','Cloud','APIs','Smart Systems','Analytics'];
+  const ecoConnections = {
+    'Artificial Intelligence': ['Automation','Analytics','Software'],
+    'Automation': ['Artificial Intelligence','APIs','IoT'],
+    'Software': ['Artificial Intelligence','Cloud','APIs'],
+    'Data': ['Analytics','Cloud','Artificial Intelligence'],
+    'IoT': ['Smart Systems','Automation','Cloud'],
+    'Cloud': ['Software','Data','APIs'],
+    'APIs': ['Software','Automation','Cloud'],
+    'Smart Systems': ['IoT','Automation','Analytics'],
+    'Analytics': ['Data','Artificial Intelligence','Smart Systems']
+  };
+  const wrap = document.getElementById('radial-wrap');
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const ecoSvg = document.getElementById('ecosystem-svg');
+  const readout = document.getElementById('eco-readout');
+  const nodeEls = [];
+  const R = 42; // percent radius
+
+  function layoutNodes(){
+    const w = wrap.clientWidth, h = wrap.clientHeight;
+    const cx = w/2, cy = h/2, r = Math.min(w,h) * (R/100);
+    nodeEls.forEach((el,i)=>{
+      const angle = (i / ecoLabels.length) * Math.PI*2 - Math.PI/2;
+      const x = cx + r*Math.cos(angle);
+      const y = cy + r*Math.sin(angle);
+      el.node.style.left = x+'px'; el.node.style.top = y+'px';
+      el.cx = x; el.cy = y;
+    });
+    ecoSvg.setAttribute('width', w); ecoSvg.setAttribute('height', h);
+    // redraw center-lines
+    Array.from(ecoSvg.querySelectorAll('line.spoke')).forEach(l=>l.remove());
+    nodeEls.forEach(el=>{
+      const line = document.createElementNS(svgNS,'line');
+      line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+      line.setAttribute('x2', el.cx); line.setAttribute('y2', el.cy);
+      line.setAttribute('class','spoke');
+      line.dataset.from = 'center'; line.dataset.to = el.label;
+      ecoSvg.appendChild(line);
+    });
+  }
+
+  ecoLabels.forEach((label)=>{
+    const node = document.createElement('div');
+    node.className = 'radial-node';
+    node.textContent = label;
+    node.dataset.label = label;
+    wrap.appendChild(node);
+    nodeEls.push({label, node});
+  });
+
+  function clearHighlights(){
+    ecoSvg.querySelectorAll('line').forEach(l=>l.classList.remove('active'));
+    nodeEls.forEach(n=>n.node.classList.remove('active'));
+  }
+
+  nodeEls.forEach(({label, node})=>{
+    node.addEventListener('mouseenter', ()=> highlight(label));
+    node.addEventListener('focus', ()=> highlight(label));
+    node.addEventListener('mouseleave', ()=>{ clearHighlights(); readout.textContent='Hover a node to see what it connects to.'; });
+    node.setAttribute('tabindex','0');
+  });
+
+  function highlight(label){
+    clearHighlights();
+    const connections = ecoConnections[label] || [];
+    ecoSvg.querySelectorAll('line').forEach(l=>{
+      if(l.dataset.to === label) l.classList.add('active');
+    });
+    nodeEls.forEach(n=>{ if(n.label===label) n.node.classList.add('active'); });
+    readout.innerHTML = connections.map(c=>`<span>${label}</span> → ${c}`).join(' &nbsp;·&nbsp; ');
+  }
+
+  window.addEventListener('resize', layoutNodes);
+  setTimeout(layoutNodes, 50);
+  new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) layoutNodes(); }); }, {threshold:0.1}).observe(wrap);
+
+  // ===== STAT COUNTERS =====
+  const statGrid = document.getElementById('stat-grid');
+  let statsPlayed = false;
+  function playStats(){
+    if(statsPlayed) return; statsPlayed = true;
+    document.querySelectorAll('.stat-value').forEach(el=>{
+      const target = parseFloat(el.dataset.target);
+      const decimal = parseInt(el.dataset.decimal || '0');
+      const suffix = el.dataset.suffix || '';
+      const dur = reducedMotion ? 1 : 1200;
+      const start = performance.now();
+      function tick(now){
+        const p = Math.min(1,(now-start)/dur);
+        const val = target * (1 - Math.pow(1-p,3));
+        el.textContent = (decimal ? val.toFixed(decimal) : Math.round(val)) + suffix;
+        if(p<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+    document.querySelectorAll('.stat-bar i').forEach(bar=>{
+      bar.style.width = bar.dataset.width;
+    });
+  }
+  new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) playStats(); }); }, {threshold:0.3}).observe(statGrid);
+
+  // ===== AGENT DEMO =====
+  const agentData = [
+    {name:'SALES AGENT', user:'How many leads came in today?', ai:'47 new leads were recorded. 31 have been qualified and 16 require follow-up.'},
+    {name:'SUPPORT AGENT', user:'What is our current response time?', ai:'Average first response time is 42 seconds across 214 conversations today.'},
+    {name:'OPERATIONS AGENT', user:'Any workflows waiting on approval?', ai:'3 workflows are queued for approval. 12 completed automatically in the last hour.'},
+    {name:'RESEARCH AGENT', user:"Summarize this week's competitor pricing changes.", ai:'2 competitors adjusted pricing this week. Full comparison compiled into a 1-page brief.'},
+    {name:'DATA AGENT', user:"What's driving the drop in conversion?", ai:'Checkout abandonment rose 8% on mobile after the last release. Flagged for review.'}
+  ];
+  const agentBtns = document.querySelectorAll('.agent-btn');
+  const termBody = document.getElementById('terminal-body');
+  function renderAgent(i){
+    const d = agentData[i];
+    termBody.innerHTML = `<div class="t-user">${d.user}</div><div class="t-ai">${d.ai}<span class="cursor-blink"></span></div>`;
+  }
+  agentBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      agentBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderAgent(parseInt(btn.dataset.agent));
+    });
+  });
+  renderAgent(0);
+
+  // ===== SMART SPACE HOTSPOTS =====
+  const spaceData = [
+    {title:'SMART LIGHTING', body:'Automatically adjusts lighting based on occupancy, time, environmental conditions, and user preferences.'},
+    {title:'SECURITY CAMERAS', body:'Continuous monitoring with motion-aware alerts across every entry point.'},
+    {title:'CLIMATE CONTROL', body:'Learns occupancy patterns to balance comfort against energy use, room by room.'},
+    {title:'ENERGY MONITORING', body:'Tracks consumption by device and surfaces where usage can be reduced.'},
+    {title:'ACCESS CONTROL', body:'Keyless entry and permissioned access, managed remotely and logged automatically.'}
+  ];
+  document.querySelectorAll('.hotspot').forEach(h=>{
+    h.addEventListener('click', ()=>{
+      const d = spaceData[parseInt(h.dataset.spot)];
+      document.getElementById('space-info').innerHTML = `<div class="si-title">${d.title}</div><div class="si-body">${d.body}</div>`;
+    });
+  });
+
+  // ===== DATA CHART REVEAL =====
+  const chartBox = document.getElementById('chart-box');
+  new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        document.getElementById('line-path').classList.add('in');
+        document.getElementById('area-path').classList.add('in');
+        const pts = document.getElementById('line-path').getAttribute('points').trim().split(' ');
+        const dotsG = document.getElementById('chart-dots');
+        pts.forEach((p,i)=>{
+          const [x,y] = p.split(',');
+          const c = document.createElementNS(svgNS,'circle');
+          c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r',3.5);
+          c.setAttribute('class','chart-dot');
+          dotsG.appendChild(c);
+          setTimeout(()=> c.classList.add('in'), reducedMotion?0:400 + i*90);
+        });
+      }
+    });
+  }, {threshold:0.3}).observe(chartBox);
+
+  // ===== TECH MARQUEE =====
+  const techs = ['Python','JavaScript','TypeScript','React','Next.js','Node.js','FastAPI','TensorFlow','PyTorch','OpenCV','PostgreSQL','MongoDB','Docker','Git','REST APIs','GraphQL','LLM APIs','Cloud Platforms'];
+  const track = document.getElementById('marquee-track');
+  const list = [...techs, ...techs].map(t=>`<span>${t}</span>`).join('');
+  track.innerHTML = list;
+
+  // ===== CONTACT FORM =====
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    form.classList.add('hidden');
+    document.getElementById('confirm').classList.remove('hidden');
+  });
+
+  // ===== HERO CANVAS NODE NETWORK =====
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W,H, mouseX=-9999, mouseY=-9999;
+  const nodeCount = window.innerWidth < 700 ? 26 : 46;
+  let nodes = [];
+
+  function resize(){
+    W = canvas.width = canvas.offsetWidth * devicePixelRatio;
+    H = canvas.height = canvas.offsetHeight * devicePixelRatio;
+  }
+  function initNodes(){
+    nodes = [];
+    for(let i=0;i<nodeCount;i++){
+      nodes.push({
+        x: Math.random()*W, y: Math.random()*H,
+        vx: (Math.random()-0.5)*0.25*devicePixelRatio, vy:(Math.random()-0.5)*0.25*devicePixelRatio,
+        r: Math.random()*1.6+1
+      });
+    }
+  }
+  resize(); initNodes();
+  window.addEventListener('resize', ()=>{ resize(); initNodes(); });
+  canvas.addEventListener('mousemove', (e)=>{
+    const rect = canvas.getBoundingClientRect();
+    mouseX = (e.clientX-rect.left)*devicePixelRatio;
+    mouseY = (e.clientY-rect.top)*devicePixelRatio;
+  });
+  canvas.addEventListener('mouseleave', ()=>{ mouseX=-9999; mouseY=-9999; });
+
+  const linkDist = 130*devicePixelRatio;
+  const cyanRGB = '95,216,224', violetRGB = '139,107,255';
+
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    for(const n of nodes){
+      n.x += n.vx; n.y += n.vy;
+      if(n.x<0||n.x>W) n.vx*=-1;
+      if(n.y<0||n.y>H) n.vy*=-1;
+      // mouse influence
+      const dx = mouseX-n.x, dy = mouseY-n.y, d = Math.hypot(dx,dy);
+      if(d < 160*devicePixelRatio){
+        const f = (1 - d/(160*devicePixelRatio)) * 0.06;
+        n.x += dx*f*0.02; n.y += dy*f*0.02;
+      }
+    }
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a=nodes[i], b=nodes[j];
+        const d = Math.hypot(a.x-b.x, a.y-b.y);
+        if(d < linkDist){
+          const op = (1 - d/linkDist) * 0.35;
+          ctx.strokeStyle = `rgba(${cyanRGB},${op})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        }
+      }
+      // connect to mouse
+      const n = nodes[i];
+      const dm = Math.hypot(mouseX-n.x, mouseY-n.y);
+      if(dm < 170*devicePixelRatio){
+        ctx.strokeStyle = `rgba(${violetRGB},${(1-dm/(170*devicePixelRatio))*0.5})`;
+        ctx.beginPath(); ctx.moveTo(n.x,n.y); ctx.lineTo(mouseX,mouseY); ctx.stroke();
+      }
+    }
+    for(const n of nodes){
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(${cyanRGB},0.8)`; ctx.fill();
+    }
+    if(!reducedMotion) requestAnimationFrame(frame);
+  }
+  if(!reducedMotion){ requestAnimationFrame(frame); }
+  else {
+    // static single frame for reduced motion users
+    frame();
+  }
+})();
+</script>
+</body>
+</html>
