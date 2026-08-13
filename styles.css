@@ -364,7 +364,7 @@ nav.scrolled{background:rgba(8,11,16,0.85); border-color:var(--line-bright);}
 .field{margin-bottom:20px;}
 .field label{display:block; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--muted); margin-bottom:8px; text-transform:uppercase;}
 .field input, .field select, .field textarea{
-  width:100%; background:rgba(255,255,255,0.02); border:1px solid var(--line); color:var(--white);
+  width:100%; background:rgba(177, 128, 128, 0.02); border:1px solid var(--line); color:var(--white);
   padding:13px 14px; font-family:var(--font-body); font-size:14px; border-radius:2px; transition:border-color .2s, background .2s;
 }
 .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--cyan); background:rgba(95,216,224,0.03);}
@@ -372,7 +372,7 @@ nav.scrolled{background:rgba(8,11,16,0.85); border-color:var(--line-bright);}
 .field-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
 @media (max-width:560px){ .field-row{grid-template-columns:1fr;} }
 #contact-form.hidden, #confirm.hidden{display:none;}
-#confirm{border:1px solid var(--cyan-dim); background:rgba(95,216,224,0.05); padding:40px 32px; text-align:center;}
+#confirm{border:1px solid var(--cyan-dim); background:rgba(46, 100, 104, 0.05); padding:40px 32px; text-align:center;}
 #confirm .c-title{font-family:var(--font-mono); font-size:13px; color:var(--cyan); letter-spacing:.1em;}
 #confirm h3{font-size:1.5rem; margin-top:14px;}
 #confirm p{color:var(--muted); margin-top:10px; font-size:14px;}
