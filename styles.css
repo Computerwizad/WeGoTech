@@ -22,7 +22,7 @@
 html{scroll-behavior:smooth;}
 body{
   background:var(--bg);
-  color:var(--white);
+  color:var(--gray);
   font-family:var(--font-body);
   line-height:1.6;
   overflow-x:hidden;
@@ -385,7 +385,7 @@ nav.scrolled{background:rgba(8,11,16,0.85); border-color:var(--line-bright);}
 .field{margin-bottom:20px;}
 .field label{display:block; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--muted); margin-bottom:8px; text-transform:uppercase;}
 .field input, .field select, .field textarea{
-  width:100%; background:rgba(177, 128, 128, 0.02); border:1px solid var(--line); color:var(--white);
+  width:100%; background:rgba(165, 185, 189, 0.568); border:1px solid var(--line); color:var(--gray);
   padding:13px 14px; font-family:var(--font-body); font-size:14px; border-radius:2px; transition:border-color .2s, background .2s;
 }
 .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--cyan); background:rgba(95,216,224,0.03);}
