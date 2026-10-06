@@ -11,9 +11,8 @@
   --violet-dim: rgba(139,107,255,0.5);
   --white:#edf1f5;
   --text:#dbe3ee;
-  --muted:#a9b4c4;
-  --muted-dim:#7f8b9d;
-  color-scheme:dark;
+  --muted:#8891a0;
+  --muted-dim:#576172;
   --font-display:'Space Grotesk', sans-serif;
   --font-body:'Inter', sans-serif;
   --font-mono:'JetBrains Mono', monospace;
@@ -21,7 +20,7 @@
   --ease: cubic-bezier(.16,.8,.24,1);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth; scroll-padding-top:90px;}
+html{scroll-behavior:smooth;}
 body{
   background:var(--bg);
   color:var(--text);
@@ -360,4 +359,4 @@ nav.scrolled{background:rgba(8,11,16,0.85); border-color:var(--line-bright);}
 
 /* ---------- about / timeline ---------- */
 .about{background:var(--bg2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
-.about-lead{font-size:clamp(1.4rem,2.6vw,1.9rem); font-family:var(--font-di
+.about-lead{font-size:clamp(1.4rem,2.6vw,1.9rem); font-family:var(--font-display); max-width:760px; letter-spacing:-0.01e
