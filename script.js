@@ -56,109 +56,6 @@
     });
   }
 
-  // ===== ECOSYSTEM RADIAL DIAGRAM =====
-  const ecoLabels = ['Artificial Intelligence','Automation','Software','Data','IoT','Cloud','APIs','Smart Systems','Analytics'];
-  const ecoConnections = {
-    'Artificial Intelligence': ['Automation','Analytics','Software'],
-    'Automation': ['Artificial Intelligence','APIs','IoT'],
-    'Software': ['Artificial Intelligence','Cloud','APIs'],
-    'Data': ['Analytics','Cloud','Artificial Intelligence'],
-    'IoT': ['Smart Systems','Automation','Cloud'],
-    'Cloud': ['Software','Data','APIs'],
-    'APIs': ['Software','Automation','Cloud'],
-    'Smart Systems': ['IoT','Automation','Analytics'],
-    'Analytics': ['Data','Artificial Intelligence','Smart Systems']
-  };
-  const wrap = document.getElementById('radial-wrap');
-  const svgNS = 'http://www.w3.org/2000/svg';
-  const ecoSvg = document.getElementById('ecosystem-svg');
-  const readout = document.getElementById('eco-readout');
-  const nodeEls = [];
-  const R = 42; // percent radius
-
-  function layoutNodes(){
-    const w = wrap.clientWidth, h = wrap.clientHeight;
-    const cx = w/2, cy = h/2, r = Math.min(w,h) * (R/100);
-    nodeEls.forEach((el,i)=>{
-      const angle = (i / ecoLabels.length) * Math.PI*2 - Math.PI/2;
-      const x = cx + r*Math.cos(angle);
-      const y = cy + r*Math.sin(angle);
-      el.node.style.left = x+'px'; el.node.style.top = y+'px';
-      el.cx = x; el.cy = y;
-    });
-    ecoSvg.setAttribute('width', w); ecoSvg.setAttribute('height', h);
-    // redraw center-lines
-    Array.from(ecoSvg.querySelectorAll('line.spoke')).forEach(l=>l.remove());
-    nodeEls.forEach(el=>{
-      const line = document.createElementNS(svgNS,'line');
-      line.setAttribute('x1', cx); line.setAttribute('y1', cy);
-      line.setAttribute('x2', el.cx); line.setAttribute('y2', el.cy);
-      line.setAttribute('class','spoke');
-      line.dataset.from = 'center'; line.dataset.to = el.label;
-      ecoSvg.appendChild(line);
-    });
-  }
-
-  ecoLabels.forEach((label)=>{
-    const node = document.createElement('div');
-    node.className = 'radial-node';
-    node.textContent = label;
-    node.dataset.label = label;
-    wrap.appendChild(node);
-    nodeEls.push({label, node});
-  });
-
-  function clearHighlights(){
-    ecoSvg.querySelectorAll('line').forEach(l=>l.classList.remove('active'));
-    nodeEls.forEach(n=>n.node.classList.remove('active'));
-  }
-
-  nodeEls.forEach(({label, node})=>{
-    node.addEventListener('mouseenter', ()=> highlight(label));
-    node.addEventListener('focus', ()=> highlight(label));
-    node.addEventListener('mouseleave', ()=>{ clearHighlights(); readout.textContent='Hover a node to see what it connects to.'; });
-    node.setAttribute('tabindex','0');
-  });
-
-  function highlight(label){
-    clearHighlights();
-    const connections = ecoConnections[label] || [];
-    ecoSvg.querySelectorAll('line').forEach(l=>{
-      if(l.dataset.to === label) l.classList.add('active');
-    });
-    nodeEls.forEach(n=>{ if(n.label===label) n.node.classList.add('active'); });
-    readout.innerHTML = connections.map(c=>`<span>${label}</span> → ${c}`).join(' &nbsp;·&nbsp; ');
-  }
-
-  window.addEventListener('resize', layoutNodes);
-  setTimeout(layoutNodes, 50);
-  new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) layoutNodes(); }); }, {threshold:0.1}).observe(wrap);
-
-  // ===== STAT COUNTERS =====
-  const statGrid = document.getElementById('stat-grid');
-  let statsPlayed = false;
-  function playStats(){
-    if(statsPlayed) return; statsPlayed = true;
-    document.querySelectorAll('.stat-value').forEach(el=>{
-      const target = parseFloat(el.dataset.target);
-      const decimal = parseInt(el.dataset.decimal || '0');
-      const suffix = el.dataset.suffix || '';
-      const dur = reducedMotion ? 1 : 1200;
-      const start = performance.now();
-      function tick(now){
-        const p = Math.min(1,(now-start)/dur);
-        const val = target * (1 - Math.pow(1-p,3));
-        el.textContent = (decimal ? val.toFixed(decimal) : Math.round(val)) + suffix;
-        if(p<1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    });
-    document.querySelectorAll('.stat-bar i').forEach(bar=>{
-      bar.style.width = bar.dataset.width;
-    });
-  }
-  new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) playStats(); }); }, {threshold:0.3}).observe(statGrid);
-
   // ===== AGENT DEMO =====
   const agentData = [
     {name:'SALES AGENT', user:'How many leads came in today?', ai:'47 new leads were recorded. 31 have been qualified and 16 require follow-up.'},
@@ -182,54 +79,30 @@
   });
   renderAgent(0);
 
-  // ===== SMART SPACE HOTSPOTS =====
-  const spaceData = [
-    {title:'SMART LIGHTING', body:'Automatically adjusts lighting based on occupancy, time, environmental conditions, and user preferences.'},
-    {title:'SECURITY CAMERAS', body:'Continuous monitoring with motion-aware alerts across every entry point.'},
-    {title:'CLIMATE CONTROL', body:'Learns occupancy patterns to balance comfort against energy use, room by room.'},
-    {title:'ENERGY MONITORING', body:'Tracks consumption by device and surfaces where usage can be reduced.'},
-    {title:'ACCESS CONTROL', body:'Keyless entry and permissioned access, managed remotely and logged automatically.'}
-  ];
-  document.querySelectorAll('.hotspot').forEach(h=>{
-    h.addEventListener('click', ()=>{
-      const d = spaceData[parseInt(h.dataset.spot)];
-      document.getElementById('space-info').innerHTML = `<div class="si-title">${d.title}</div><div class="si-body">${d.body}</div>`;
-    });
-  });
-
-  // ===== DATA CHART REVEAL =====
-  const chartBox = document.getElementById('chart-box');
-  new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        document.getElementById('line-path').classList.add('in');
-        document.getElementById('area-path').classList.add('in');
-        const pts = document.getElementById('line-path').getAttribute('points').trim().split(' ');
-        const dotsG = document.getElementById('chart-dots');
-        pts.forEach((p,i)=>{
-          const [x,y] = p.split(',');
-          const c = document.createElementNS(svgNS,'circle');
-          c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r',3.5);
-          c.setAttribute('class','chart-dot');
-          dotsG.appendChild(c);
-          setTimeout(()=> c.classList.add('in'), reducedMotion?0:400 + i*90);
-        });
-      }
-    });
-  }, {threshold:0.3}).observe(chartBox);
-
   // ===== TECH MARQUEE =====
-  const techs = ['Python','JavaScript','TypeScript','React','Next.js','Node.js','FastAPI','TensorFlow','PyTorch','OpenCV','PostgreSQL','MongoDB','Docker','Git','REST APIs','GraphQL','LLM APIs','Cloud Platforms'];
+  const techs = ['Python','JavaScript','TypeScript','React','Next.js','Node.js','FastAPI','LangChain','ChromaDB','SQLite','Docker','Git','REST APIs','LLM APIs'];
   const track = document.getElementById('marquee-track');
   const list = [...techs, ...techs].map(t=>`<span>${t}</span>`).join('');
   track.innerHTML = list;
 
-  // ===== CONTACT FORM =====
+  // ===== CONTACT FORM (Netlify Forms) =====
   const form = document.getElementById('contact-form');
+  const formError = document.getElementById('form-error');
   form.addEventListener('submit', (e)=>{
     e.preventDefault();
-    form.classList.add('hidden');
-    document.getElementById('confirm').classList.remove('hidden');
+    formError.classList.add('hidden');
+    const body = new URLSearchParams(new FormData(form)).toString();
+    fetch('/', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body
+    }).then((res)=>{
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      form.classList.add('hidden');
+      document.getElementById('confirm').classList.remove('hidden');
+    }).catch(()=>{
+      formError.classList.remove('hidden');
+    });
   });
 
   // ===== HERO CANVAS NODE NETWORK =====
