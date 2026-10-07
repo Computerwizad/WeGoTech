@@ -54,9 +54,16 @@
 
 <!-- PHILOSOPHY -->
 <section class="philosophy">
-  <div class="container">
-    <p class="lead" id="philosophy-text">Technology should do more than exist. It should think, connect, automate, and create value.</p>
-    <p class="sub reveal">We combine software engineering, artificial intelligence, automation, smart technologies, and statistical intelligence to create systems designed around real business problems.</p>
+  <div class="container phil-grid">
+    <div class="phil-text">
+      <p class="lead" id="philosophy-text">Technology should do more than exist. It should think, connect, automate, and create value.</p>
+      <p class="sub reveal">We combine software engineering, artificial intelligence, automation, smart technologies, and statistical intelligence to create systems designed around real business problems.</p>
+    </div>
+    <div class="visual-robot robot-anim" data-parallax="0.28" style="aspect-ratio:472/612" role="img" aria-label="Futuristic AI robot resting its chin on its hand, thinking">
+      <img class="r-base" src="robot-base.webp" width="472" height="612" alt="" loading="lazy">
+      <img class="r-fingers" src="robot-fingers.webp" alt="" loading="lazy" style="left:11.44%; top:40.20%; width:23.73%">
+      <span class="r-eye-blink" style="left:16.53%; top:23.20%; width:18.64%; height:9.80%"><img class="r-eye" src="robot-eye.webp" alt="" loading="lazy"></span>
+    </div>
   </div>
 </section>
 
@@ -156,6 +163,7 @@
 <!-- ABOUT -->
 <section id="about" class="about">
   <div class="container">
+    <div class="about-grid">
     <div class="reveal">
       <div class="eyebrow">About WeGoTech</div>
       <h2 class="about-lead" style="margin-top:14px;">We build the infrastructure of tomorrow's businesses.</h2>
@@ -163,6 +171,10 @@
         <span>Software Engineering</span><span>Artificial Intelligence</span><span>Data Science</span>
         <span>Automation</span><span>IoT</span><span>Statistical Research</span><span>Digital Product Design</span>
       </div>
+    </div>
+    <canvas id="globe-canvas" data-parallax="0.22" class="visual-globe globe-canvas" width="600" height="600" role="img" aria-label="Rotating digital globe connected by a network of light">
+      <img src="wegotech-globe.webp" alt="Glowing digital globe connected by a network of light">
+    </canvas>
     </div>
     <div class="timeline reveal">
       <div class="t-step"><span>WEB</span></div>
@@ -182,7 +194,7 @@
       <div class="founder-content">
         <h2 class="founder-title">Dickens Ouma<span class="role">Founder &amp; Lead Developer</span></h2>
         <p class="founder-quote">"I build high-performance and robust web applications and automated digital tools that help businesses stand out and grow. Every project is built for speed, responsiveness, and user engagement."</p>
-        <a href="https://devdickie.netlify.app" target="_blank" rel="noopener noreferrer" class="founder-cta">Meet the Founder→</a>
+        <a href="https://devdickie.netlify.app" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Meet the Founder →</a>
       </div>
     </div>
   </div>
@@ -263,5 +275,6 @@
 </footer>
 
 <script src="script.js"></script>
+<script src="globe.js"></script>
 </body>
 </html>
