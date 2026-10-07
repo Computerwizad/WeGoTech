@@ -95,7 +95,7 @@
     var main = ctx; under = mk(); over = mk();
     ctx = under.getContext('2d');
     // soft outer glow
-    var g = ctx.createRadialGradient(cx, cy, R * 0.9, cx, cy, R * 1.9);
+    var g = ctx.createRadialGradient(cx, cy, R * 0.9, cx, cy, R * 1.6);
     g.addColorStop(0, 'rgba(60,150,255,0.22)'); g.addColorStop(1, 'rgba(60,150,255,0)');
     ctx.fillStyle = g; ctx.fillRect(0, 0, S, S);
 
@@ -194,4 +194,27 @@
     new IntersectionObserver(function(es){ visible = es[0].isIntersecting; if(visible) start(); else stop(); }, {threshold: 0.05}).observe(canvas);
   }
   document.addEventListener('visibilitychange', function(){ if(document.hidden) stop(); else start(); });
+})();
+
+/* Parallax: elements marked data-parallax drift slower than the page, so they read as a deeper layer. */
+(function(){
+  var els = [].slice.call(document.querySelectorAll('[data-parallax]'));
+  if(!els.length || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  var ticking = false;
+  function update(){
+    ticking = false;
+    var vh = window.innerHeight;
+    els.forEach(function(el){
+      var host = el.parentElement.getBoundingClientRect();
+      if(host.bottom < -300 || host.top > vh + 300) return;
+      var d = (host.top + host.height / 2) - vh / 2;
+      var k = parseFloat(el.getAttribute('data-parallax')) || 0.2;
+      var y = Math.max(-90, Math.min(90, -d * k));
+      el.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,0)';
+    });
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  update();
 })();

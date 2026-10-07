@@ -101,6 +101,10 @@
       form.classList.add('hidden');
       document.getElementById('confirm').classList.remove('hidden');
     }).catch(()=>{
+      const v = (id)=>document.getElementById(id).value;
+      const subject = encodeURIComponent('WeGoTech project request from ' + v('f-name'));
+      const text = encodeURIComponent('Name: ' + v('f-name') + '\nCompany: ' + v('f-company') + '\nEmail: ' + v('f-email') + '\nBudget: ' + v('f-budget') + '\nProject type: ' + v('f-type') + '\n\n' + v('f-desc'));
+      formError.innerHTML = 'Sorry, that did not send. <a href="mailto:wegotech130@gmail.com?subject=' + subject + '&body=' + text + '" style="color:var(--cyan);text-decoration:underline;">Send it by email instead</a>.';
       formError.classList.remove('hidden');
     });
   });
